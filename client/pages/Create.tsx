@@ -1,8 +1,10 @@
-import React from "react";
+import { NextPage } from "next";
+import React, { useState } from "react";
 
 type Props = {};
 
-const Create = (props: Props) => {
+const Create: NextPage = (props: Props) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   return <div>Create</div>;
 };
 
