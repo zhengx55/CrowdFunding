@@ -37,9 +37,7 @@ export const StateContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const { contract } = useContract(
-    "0xf59A1f8251864e1c5a6bD64020e3569be27e6AA9"
-  );
+  const { contract } = useContract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!);
   const { mutateAsync: createCampaign } = useContractWrite(
     contract,
     "createCampaign"
@@ -97,7 +95,7 @@ export const StateContextProvider = ({
   };
 
   const donate = async (pId: number, amount: string) => {
-    const data = await contract.call("donateToCampaign", [pId], {
+    const data = await contract?.call("donateToCampaign", [pId], {
       value: ethers.utils.parseEther(amount),
     });
 
@@ -105,7 +103,7 @@ export const StateContextProvider = ({
   };
 
   const getDonations = async (pId: number) => {
-    const donations = await contract.call("getDonators", [pId]);
+    const donations = await contract?.call("getDonators", [pId]);
     const numberOfDonations = donations[0].length;
 
     const parsedDonations = [];

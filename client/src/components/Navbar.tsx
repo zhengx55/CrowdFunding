@@ -10,12 +10,14 @@ import { Router, useRouter } from "next/router";
 import { cn } from "../utils";
 import { Search } from "lucide-react";
 import { Input } from "./ui/input";
+import { useMetamask } from "@thirdweb-dev/react";
 
 const Navbar = () => {
   const [isActive, setIsActive] = useState("dashboard");
   const [toggleDrawer, setToggleDrawer] = useState(false);
-  const { connect, address } = useStateContext();
+  const { address } = useStateContext();
   const router = useRouter();
+  const connect = useMetamask();
 
   return (
     <div className="flex md:flex-row flex-col-reverse justify-between mb-[35px] gap-6">
@@ -35,7 +37,7 @@ const Navbar = () => {
         <Button
           className={cn(
             address ? " bg-green-400" : "bg-[#2c2f32]",
-            "text-zinc-200 text-[18px]"
+            " text-slate-100 text-[18px]"
           )}
           onClick={() => {
             if (address) router.push("/create");

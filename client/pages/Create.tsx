@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import React, { ChangeEvent, useState } from "react";
 import Layout from "../src/components/Layout";
-import { DollarSign, Loader2 } from "lucide-react";
+import { CircleDollarSign, Loader2 } from "lucide-react";
 import FormField from "../src/components/FormField";
 import { useStateContext } from "../src/context";
 import { money } from "../src/assets";
@@ -68,11 +68,7 @@ const Create: NextPage = (props: Props) => {
           />
 
           <div className="w-full flex justify-start items-center p-4 bg-[#8c6dfd] h-[120px] rounded-[10px]">
-            <img
-              src={money}
-              alt="money"
-              className="w-[40px] h-[40px] object-contain"
-            />
+            <CircleDollarSign className="w-[40px] h-[40px]" />
             <h4 className="font-epilogue font-bold text-[25px] text-white ml-[20px]">
               You will get 100% of the raised amount
             </h4>
