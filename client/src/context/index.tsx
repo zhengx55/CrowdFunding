@@ -7,7 +7,19 @@ import {
   useContractWrite,
 } from "@thirdweb-dev/react";
 import { ethers } from "ethers";
-import { EditionMetadataWithOwnerOutputSchema } from "@thirdweb-dev/sdk";
+import {
+  EditionMetadataWithOwnerOutputSchema,
+  SmartContract,
+} from "@thirdweb-dev/sdk";
+
+type IForms = {
+  title: string;
+  name: string;
+  deadline: string;
+  description: string;
+  target: string;
+  image: string;
+};
 type Campaign = {
   owner: any;
   title: any;
@@ -18,9 +30,16 @@ type Campaign = {
   image: any;
 };
 
-const StateContext = createContext({});
+const StateContext = createContext({ address: "", connect: () => {} } as {
+  address: string;
+  connect: Function;
+});
 
-export const StateContextProvider = ({ children }) => {
+export const StateContextProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const { contract } = useContract(
     "0xf59A1f8251864e1c5a6bD64020e3569be27e6AA9"
   );
@@ -32,7 +51,7 @@ export const StateContextProvider = ({ children }) => {
   const address = useAddress();
   const connect = useMetamask();
 
-  const publishCampaign = async (form) => {
+  const publishCampaign = async (form: IForms) => {
     try {
       const data = await createCampaign({
         args: [
@@ -80,7 +99,7 @@ export const StateContextProvider = ({ children }) => {
     return filteredCampaigns;
   };
 
-  const donate = async (pId, amount) => {
+  const donate = async (pId: number, amount: string) => {
     const data = await contract.call("donateToCampaign", [pId], {
       value: ethers.utils.parseEther(amount),
     });
@@ -88,7 +107,7 @@ export const StateContextProvider = ({ children }) => {
     return data;
   };
 
-  const getDonations = async (pId) => {
+  const getDonations = async (pId: number) => {
     const donations = await contract.call("getDonators", [pId]);
     const numberOfDonations = donations[0].length;
 

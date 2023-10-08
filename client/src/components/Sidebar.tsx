@@ -3,6 +3,7 @@ import { logo, sun } from "../assets";
 import Image from "next/image";
 import Link from "next/link";
 import { navlinks } from "../constant";
+import { Sun } from "lucide-react";
 
 interface IconProps {
   styles?: string;
@@ -66,7 +67,7 @@ const Sidebar = () => {
           ))}
         </div>
 
-        <Icon styles="bg-[#1c1c24] shadow-secondary" imgUrl={sun} />
+        <Sun className="w-6 h- text-slate-200 rounded-full" />
       </div>
     </div>
   );
