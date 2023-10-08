@@ -9,6 +9,7 @@ import { useStateContext } from "../context";
 import { Router, useRouter } from "next/router";
 import { cn } from "../utils";
 import { Search } from "lucide-react";
+import { Input } from "./ui/input";
 
 const Navbar = () => {
   const [isActive, setIsActive] = useState("dashboard");
@@ -18,11 +19,11 @@ const Navbar = () => {
 
   return (
     <div className="flex md:flex-row flex-col-reverse justify-between mb-[35px] gap-6">
-      <div className="lg:flex-1 flex flex-row max-w-[458px] py-2 pl-4 pr-2 h-[52px] bg-[#1c1c24] rounded-[100px]">
-        <input
+      <div className="lg:flex-1 flex flex-row max-w-[458px] gap-x-2 py-2 pl-4 pr-2 h-[52px] bg-[#1c1c24] rounded-[100px]">
+        <Input
           type="text"
           placeholder="Search for campaigns"
-          className="flex w-full font-epilogue font-normal text-[14px] placeholder:text-[#4b5264] text-white bg-transparent outline-none"
+          className="font-epilogue text-[14px] placeholder:text-[#4b5264] text-white bg-transparent outline-none border-0"
         />
 
         <div className="w-[72px] hover:animate-in h-full rounded-[20px] bg-[#4acd8d] flex justify-center items-center cursor-pointer">
@@ -32,7 +33,10 @@ const Navbar = () => {
 
       <div className="sm:flex hidden flex-row justify-end gap-4 items-center">
         <Button
-          className={cn(address ? " bg-green-400" : "bg-[#2c2f32]", 'text-zinc-200 text-[18px]')}
+          className={cn(
+            address ? " bg-green-400" : "bg-[#2c2f32]",
+            "text-zinc-200 text-[18px]"
+          )}
           onClick={() => {
             if (address) router.push("/create");
             else connect();

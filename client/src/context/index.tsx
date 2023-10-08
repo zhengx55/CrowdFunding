@@ -30,10 +30,7 @@ type Campaign = {
   image: any;
 };
 
-const StateContext = createContext({ address: "", connect: () => {} } as {
-  address: string;
-  connect: Function;
-});
+const StateContext = createContext({} as any);
 
 export const StateContextProvider = ({
   children,
