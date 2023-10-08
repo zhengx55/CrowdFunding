@@ -10,7 +10,11 @@ import { StateContextProvider } from "../src/context";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ThirdwebProvider activeChain={ChainId.Goerli}>
+    <ThirdwebProvider
+      clientId={process.env.NEXT_PUBLIC_TEMPLATE_CLIENT_ID}
+      activeChain={ChainId.Goerli}
+      secretKey={process.env.NEXT_PUBLIC_API_KEY}
+    >
       <StateContextProvider>
         <Component {...pageProps} />
       </StateContextProvider>

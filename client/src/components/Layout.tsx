@@ -6,7 +6,7 @@ type Props = { children: React.ReactNode };
 
 const Layout = ({ children }: Props) => {
   return (
-    <main className="relative sm:-8 p-4 bg-[#13131a] min-h-screen flex flex-row">
+    <main className="relative sm:-8 p-4 bg-gradient-to-r from-gray-700 via-gray-900 to-black min-h-screen flex flex-row">
       <div className="sm:flex hidden mr-10 relative">
         <Sidebar />
       </div>

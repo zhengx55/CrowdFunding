@@ -20,13 +20,14 @@ type IForms = {
   target: string;
   image: string;
 };
-type Campaign = {
-  owner: any;
-  title: any;
-  description: any;
-  target: { toString: () => ethers.BigNumberish };
-  deadline: { toNumber: () => any };
-  amountCollected: { toString: () => ethers.BigNumberish };
+
+export type Campaign = {
+  owner: string;
+  title: string;
+  description: string;
+  target: string;
+  deadline: Date;
+  amountCollected: string;
   image: any;
 };
 

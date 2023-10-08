@@ -15,9 +15,8 @@ import { useMetamask } from "@thirdweb-dev/react";
 const Navbar = () => {
   const [isActive, setIsActive] = useState("dashboard");
   const [toggleDrawer, setToggleDrawer] = useState(false);
-  const { address } = useStateContext();
+  const { connect, address } = useStateContext();
   const router = useRouter();
-  const connect = useMetamask();
 
   return (
     <div className="flex md:flex-row flex-col-reverse justify-between mb-[35px] gap-6">

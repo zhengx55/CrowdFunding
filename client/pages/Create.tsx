@@ -1,18 +1,21 @@
 import { NextPage } from "next";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import Layout from "../src/components/Layout";
 import { CircleDollarSign, Loader2 } from "lucide-react";
 import FormField from "../src/components/FormField";
 import { useStateContext } from "../src/context";
 import { money } from "../src/assets";
 import { Button } from "../src/components/ui/button";
+import { checkIfImage } from "../src/utils";
+import { ethers } from "ethers";
+import { useRouter } from "next/router";
 
 type Props = {};
 
 const Create: NextPage = (props: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { createCampaign } = useStateContext();
-
+  const router = useRouter();
   const [form, setForm] = useState({
     name: "",
     title: "",
@@ -27,7 +30,23 @@ const Create: NextPage = (props: Props) => {
   ) => {
     setForm({ ...form, [fieldName]: e.target.value });
   };
-  const handleSubmit = () => {};
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    checkIfImage(form.image, async (exists) => {
+      if (exists) {
+        setIsLoading(true);
+        await createCampaign({
+          ...form,
+          target: ethers.utils.parseUnits(form.target, 18),
+        });
+        setIsLoading(false);
+        router.back();
+      } else {
+        alert("Provide valid image URL");
+        setForm({ ...form, image: "" });
+      }
+    });
+  };
   return (
     <Layout>
       <div className="bg-[#1c1c24] flex justify-center items-center flex-col rounded-[10px] sm:p-10 p-4">
