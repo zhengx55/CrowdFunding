@@ -16,7 +16,6 @@ const CampaignDetails = () => {
   const { donate, getDonations, contract, address } = useStateContext();
   const [campaign, setCampaign] = useState<Campaign>();
   useEffect(() => {
-    console.log(router.query);
     const state = JSON.parse(router.query.campaign as string);
     setCampaign(state);
   }, [router.query]);

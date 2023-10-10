@@ -35,7 +35,9 @@ const Navbar = () => {
       <div className="sm:flex hidden flex-row justify-end gap-4 items-center">
         <Button
           className={cn(
-            address ? " bg-green-400" : "bg-[#2c2f32]",
+            address
+              ? " bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400"
+              : "bg-[#2c2f32]",
             " text-slate-100 text-[18px]"
           )}
           onClick={() => {
