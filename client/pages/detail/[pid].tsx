@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { ethers } from "ethers";
 import { calculateBarPercentage, daysLeft } from "../../src/utils";
 import { useRouter } from "next/router";
 import { Campaign, useStateContext } from "../../src/context";
@@ -16,27 +15,24 @@ const CampaignDetails = () => {
   const { donate, getDonations, contract, address, getCampaign } =
     useStateContext();
   const [campaign, setCampaign] = useState<Campaign>();
+  const fetchDonators = async () => {
+    const data = await getDonations(pid);
+    setDonators(data);
+  };
+
   const fetchCampaign = async () => {
     const data = await getCampaign(pid);
     setCampaign(data);
   };
   useEffect(() => {
-    if (contract) fetchCampaign();
+    if (contract) {
+      fetchCampaign();
+      fetchDonators();
+    }
   }, [contract, address]);
   const [isLoading, setIsLoading] = useState(false);
   const [amount, setAmount] = useState("");
   const [donators, setDonators] = useState<any>([]);
-
-  const remainingDays = 1;
-
-  // const fetchDonators = async () => {
-  //   const data = await getDonations(campaign.pId);
-  //   setDonators(data);
-  // };
-
-  // useEffect(() => {
-  //   if (contract) fetchDonators();
-  // }, [contract, address]);
 
   const handleDonate = async () => {
     setIsLoading(true);
@@ -44,18 +40,20 @@ const CampaignDetails = () => {
     router.push("/");
     setIsLoading(false);
   };
-  if (!campaign) return null;
-
+  if (!campaign)
+    return (
+      <Layout>
+        <Loader2 className="w-5 h-5 animate-spin text-slate-300" />
+      </Layout>
+    );
   return (
     <Layout>
       {isLoading && <Loader2 className="w-5 h-5 animate-spin text-slate-300" />}
       <div className="w-full flex md:flex-row flex-col mt-10 gap-[30px]">
         <div className="flex-1 flex-col">
-          <Image
+          <img
             src={campaign.image!}
             alt="campaign"
-            width={100}
-            height={100}
             className="w-full h-[410px] object-cover rounded-xl"
           />
           <div className="relative w-full h-[5px] bg-[#3a3a43] mt-2">
@@ -63,8 +61,8 @@ const CampaignDetails = () => {
               className="absolute h-full bg-[#4acd8d]"
               style={{
                 width: `${calculateBarPercentage(
-                  campaign.target,
-                  campaign.amountCollected
+                  parseFloat(campaign.target),
+                  parseFloat(campaign.amountCollected)
                 )}%`,
                 maxWidth: "100%",
               }}
@@ -73,7 +71,7 @@ const CampaignDetails = () => {
         </div>
 
         <div className="flex md:w-[150px] items-center w-full flex-wrap justify-between gap-[30px]">
-          <CountBox title="Days Left" value={remainingDays} />
+          <CountBox title="Days Left" value={daysLeft(campaign.deadline)} />
           <CountBox
             title={`Raised of ${campaign.target}`}
             value={campaign.amountCollected as string}
@@ -127,19 +125,51 @@ const CampaignDetails = () => {
 
             <div className="mt-[20px] flex flex-col gap-4">
               {donators.length > 0 ? (
-                donators.map((item, index) => (
-                  <div
-                    key={`${item.donator}-${index}`}
-                    className="flex justify-between items-center gap-4"
-                  >
-                    <p className="font-epilogue font-normal text-[16px] text-[#b2b3bd] leading-[26px] break-ll">
-                      {index + 1}. {item.donator}
-                    </p>
-                    <p className="font-epilogue font-normal text-[16px] text-[#808191] leading-[26px] break-ll">
-                      {item.donation}
-                    </p>
-                  </div>
-                ))
+                donators.map(
+                  (
+                    item: {
+                      donator:
+                        | string
+                        | number
+                        | boolean
+                        | React.ReactElement<
+                            any,
+                            string | React.JSXElementConstructor<any>
+                          >
+                        | Iterable<React.ReactNode>
+                        | React.ReactPortal
+                        | React.PromiseLikeOfReactNode
+                        | null
+                        | undefined;
+                      donation:
+                        | string
+                        | number
+                        | boolean
+                        | React.ReactElement<
+                            any,
+                            string | React.JSXElementConstructor<any>
+                          >
+                        | Iterable<React.ReactNode>
+                        | React.ReactPortal
+                        | React.PromiseLikeOfReactNode
+                        | null
+                        | undefined;
+                    },
+                    index: number
+                  ) => (
+                    <div
+                      key={`${item.donator}-${index}`}
+                      className="flex justify-between items-center gap-4"
+                    >
+                      <p className="font-epilogue font-normal text-[16px] text-[#b2b3bd] leading-[26px] break-ll">
+                        {index + 1}. {item.donator}
+                      </p>
+                      <p className="font-epilogue font-normal text-[16px] text-[#808191] leading-[26px] break-ll">
+                        {item.donation}
+                      </p>
+                    </div>
+                  )
+                )
               ) : (
                 <p className="font-epilogue font-normal text-[16px] text-[#808191] leading-[26px] text-justify">
                   No donators yet. Be the first one!
@@ -181,6 +211,7 @@ const CampaignDetails = () => {
                 type="button"
                 variant="default"
                 className="bg-[#8c6dfd] w-full"
+                onClick={handleDonate}
               >
                 Fun This Campaign
               </Button>

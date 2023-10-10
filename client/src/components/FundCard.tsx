@@ -26,11 +26,9 @@ const FundCard: FC<FunCardProps> = ({
       className="sm:w-[288px] w-full pt-2 flex items-center flex-col rounded-[15px] bg-[#1c1c24] cursor-pointer"
       onClick={handleClick}
     >
-      <Image
+      <img
         src={image}
         alt="fund"
-        width={100}
-        height={100}
         className="w-[90%] h-[158px] object-cover rounded-[15px]"
       />
 
