@@ -12,12 +12,10 @@ type Props = {
 const DisplayCampaigns: FC<Props> = ({ title, isLoading, campaigns }) => {
   const router = useRouter();
   const handleNavigate = (campaign: Campaign) => {
-    const campaingData = JSON.stringify(campaign);
     router.push({
       pathname: `/detail/[pid]`,
       query: {
         pid: campaign.pId,
-        campaign: campaingData,
       },
     });
   };

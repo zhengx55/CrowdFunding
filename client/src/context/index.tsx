@@ -86,6 +86,23 @@ export const StateContextProvider = ({
     return parsedCampaings;
   };
 
+  const getCampaign = async (pId: number): Promise<Campaign> => {
+    const campaign = await contract?.call("getCampaign", [pId]);
+    const parseCampaign = {
+      owner: campaign.owner,
+      title: campaign.title,
+      description: campaign.description,
+      target: ethers.utils.formatEther(campaign.target.toString()),
+      deadline: campaign.deadline.toNumber(),
+      amountCollected: ethers.utils.formatEther(
+        campaign.amountCollected.toString()
+      ),
+      image: campaign.image,
+      pId,
+    };
+    return parseCampaign;
+  };
+
   const getUserCampaigns = async () => {
     const allCampaigns = await getCampaigns();
 
@@ -131,6 +148,7 @@ export const StateContextProvider = ({
         getUserCampaigns,
         donate,
         getDonations,
+        getCampaign,
       }}
     >
       {children}

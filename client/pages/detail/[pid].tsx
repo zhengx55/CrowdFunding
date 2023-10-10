@@ -13,12 +13,16 @@ import { Button } from "../../src/components/ui/button";
 const CampaignDetails = () => {
   const router = useRouter();
   const { pid } = router.query;
-  const { donate, getDonations, contract, address } = useStateContext();
+  const { donate, getDonations, contract, address, getCampaign } =
+    useStateContext();
   const [campaign, setCampaign] = useState<Campaign>();
+  const fetchCampaign = async () => {
+    const data = await getCampaign(pid);
+    setCampaign(data);
+  };
   useEffect(() => {
-    const state = JSON.parse(router.query.campaign as string);
-    setCampaign(state);
-  }, [router.query]);
+    if (contract) fetchCampaign();
+  }, [contract, address]);
   const [isLoading, setIsLoading] = useState(false);
   const [amount, setAmount] = useState("");
   const [donators, setDonators] = useState<any>([]);
