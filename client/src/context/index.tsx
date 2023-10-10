@@ -26,9 +26,10 @@ export type Campaign = {
   title: string;
   description: string;
   target: string;
-  deadline: Date;
+  deadline: any;
   amountCollected: string;
-  image: any;
+  image: string;
+  pId: number;
 };
 
 const StateContext = createContext({} as any);

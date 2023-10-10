@@ -5,11 +5,11 @@ import { daysLeft } from "../utils";
 import Image from "next/image";
 import { Campaign } from "../context";
 
-const FundCard: FC<
-  Campaign & {
-    handleClick: () => void;
-  }
-> = ({
+type FunCardProps = Campaign & {
+  handleClick: any;
+};
+
+const FundCard: FC<FunCardProps> = ({
   owner,
   title,
   description,
